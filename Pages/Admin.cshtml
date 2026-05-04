@@ -1,0 +1,91 @@
+@page
+@model DemoWebApp.Pages.AdminModel
+@{
+    ViewData["Title"] = Model.HasAdminAccess ? "Administration Dashboard" : "Admin login";
+}
+
+<section class="page-band admin">
+    @if (!Model.HasAdminAccess)
+    {
+        <div class="admin-login">
+            <p class="eyebrow">Administrator access</p>
+            <h1>Admin Login</h1>
+            <p class="panel-note">Sign in with an AD administrator account. Access to the dashboard is granted only after LDAP confirms Admin group membership.</p>
+
+            @if (!string.IsNullOrWhiteSpace(Model.AdminError))
+            {
+                <div class="alert">@Model.AdminError</div>
+            }
+
+            <form class="stack" id="admin-login-form" method="post" action="@Url.Content("~/signin-admin")">
+                <div class="directory-label">
+                    <span>Active Directory</span>
+                    <strong>@Model.AdName</strong>
+                </div>
+                <label>
+                    <span>Username</span>
+                    <input id="admin-username" name="username" autocomplete="username" placeholder="jane.admin" autofocus />
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input id="admin-password" name="password" type="password" autocomplete="current-password" />
+                </label>
+                <button class="secondary-button" type="submit">Open admin dashboard</button>
+            </form>
+
+            <script>
+                document.getElementById("admin-username")?.addEventListener("keydown", event => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        document.getElementById("admin-password")?.focus();
+                    }
+                });
+
+                document.getElementById("admin-password")?.addEventListener("keydown", event => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        document.getElementById("admin-login-form")?.requestSubmit();
+                    }
+                });
+            </script>
+        </div>
+    }
+    else
+    {
+        <div class="page-heading">
+            <div>
+                <p class="eyebrow">Administrator access</p>
+                <h1>Administration Dashboard</h1>
+            </div>
+            <div class="status-pill">AD group verified</div>
+        </div>
+
+        <div class="admin-grid">
+            <section class="control-panel">
+                <h2>Identity Controls</h2>
+                <div class="control-row"><span>Provision sales role</span><button>Run</button></div>
+                <div class="control-row"><span>Review access requests</span><button>Open</button></div>
+                <div class="control-row"><span>Reconcile AD groups</span><button>Sync</button></div>
+            </section>
+
+            <section class="control-panel">
+                <h2>System Health</h2>
+                <div class="health-meter"><span style="width: 92%"></span></div>
+                <p class="panel-note">Directory connector healthy. Last policy evaluation completed 4 minutes ago.</p>
+                <div class="tiny-stats">
+                    <div><strong>126</strong><span>Managed users</span></div>
+                    <div><strong>9</strong><span>Pending approvals</span></div>
+                </div>
+            </section>
+
+            <section class="control-panel wide">
+                <h2>Audit Snapshot</h2>
+                <ul class="audit-list">
+                    <li><span>10:42</span> Admin role confirmed through LDAP recursive group lookup</li>
+                    <li><span>10:36</span> OneLogin metadata cache refreshed</li>
+                    <li><span>10:21</span> Sales access policy simulation completed</li>
+                </ul>
+            </section>
+        </div>
+    }
+</section>

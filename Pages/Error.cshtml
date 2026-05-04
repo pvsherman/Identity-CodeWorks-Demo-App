@@ -1,0 +1,11 @@
+@page
+@model DemoWebApp.Pages.ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="message-page">
+    <h1>Something went wrong</h1>
+    <p>The demo application could not complete the request. Check the application logs for details.</p>
+    <a class="secondary-button" asp-page="/Index">Return to sign in</a>
+</section>

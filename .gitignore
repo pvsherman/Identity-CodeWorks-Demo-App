@@ -1,0 +1,17 @@
+bin/
+obj/
+publish/
+verify-build/
+
+.vs/
+.vscode/
+.dotnet-home/
+
+App_Data/
+logs/
+
+*.user
+*.suo
+*.cache
+
+TestResults/

@@ -1,0 +1,54 @@
+@page "/User"
+@model DemoWebApp.Pages.UserModel
+@{
+    ViewData["Title"] = "Sales Pipeline";
+}
+
+<section class="page-band">
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">User access</p>
+            <h1>Sales Pipeline Operations</h1>
+        </div>
+        <div class="metric-strip">
+            <div><strong>$1.42M</strong><span>Open pipeline</span></div>
+            <div><strong>84%</strong><span>Forecast confidence</span></div>
+            <div><strong>18</strong><span>Renewals due</span></div>
+        </div>
+    </div>
+
+    <div class="action-bar">
+        <button>Approve quote</button>
+        <button>Assign owner</button>
+        <button>Sync CRM</button>
+        <button>Export forecast</button>
+    </div>
+
+    <section class="table-panel">
+        <table>
+            <thead>
+                <tr>
+                    <th>Account</th>
+                    <th>Region</th>
+                    <th>Stage</th>
+                    <th>Owner</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Rows)
+                {
+                    <tr>
+                        <td>@row.Account</td>
+                        <td>@row.Region</td>
+                        <td>@row.Stage</td>
+                        <td>@row.Owner</td>
+                        <td>@row.Value</td>
+                        <td><span class="badge">@row.Status</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+</section>

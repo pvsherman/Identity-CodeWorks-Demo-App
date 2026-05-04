@@ -1,0 +1,33 @@
+@using DemoWebApp.Configuration
+@using Microsoft.Extensions.Options
+@inject IOptions<AppBrandingOptions> Branding
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sales Access Demo</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" asp-page="/Index">
+            <img src="@Url.Content(Branding.Value.LogoFile)" alt="Company logo" />
+            <span>Sales Access Demo</span>
+        </a>
+        <nav class="nav">
+            <a asp-page="/User">User</a>
+            <a asp-page="/Admin">Admin</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form method="post" action="@Url.Content("~/signout")">
+                    <button class="link-button" type="submit">Sign out</button>
+                </form>
+            }
+        </nav>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+</body>
+</html>
