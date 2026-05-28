@@ -185,7 +185,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(DemoPolicies.RegularOnly, policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim(DemoClaimTypes.AuthenticationMethod, DemoAuthenticationMethods.Sso);
+        policy.RequireClaim(DemoClaimTypes.AuthenticationMethod, DemoAuthenticationMethods.Sso, DemoAuthenticationMethods.Password);
         policy.RequireRole(DemoRoles.Regular);
     });
 });
@@ -227,7 +227,7 @@ app.MapPost("/signin-admin", async (
     var result = await activeDirectory.ValidateAdminCredentialsAsync(username, password);
     if (!result.Success)
     {
-        return Results.LocalRedirect($"~/?adminError={Uri.EscapeDataString(result.ErrorMessage ?? "Access denied")}");
+        return Results.LocalRedirect($"~/Admin?adminError={Uri.EscapeDataString(result.ErrorMessage ?? "Access denied")}");
     }
 
     var claims = new List<Claim>
@@ -242,6 +242,32 @@ app.MapPost("/signin-admin", async (
     await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
     return Results.LocalRedirect("~/Admin");
+}).DisableAntiforgery();
+
+app.MapPost("/signin-user", async (
+    HttpContext httpContext,
+    IActiveDirectoryService activeDirectory,
+    [FromForm] string username,
+    [FromForm] string password) =>
+{
+    var result = await activeDirectory.ValidateUserCredentialsAsync(username, password);
+    if (!result.Success)
+    {
+        return Results.LocalRedirect($"~/User?userError={Uri.EscapeDataString(result.ErrorMessage ?? "Access denied")}");
+    }
+
+    var claims = new List<Claim>
+    {
+        new(ClaimTypes.Name, result.DisplayName ?? username),
+        new(ClaimTypes.NameIdentifier, result.UserPrincipalName ?? username),
+        new(ClaimTypes.Role, DemoRoles.Regular),
+        new(DemoClaimTypes.AuthenticationMethod, DemoAuthenticationMethods.Password)
+    };
+
+    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+    return Results.LocalRedirect("~/User");
 }).DisableAntiforgery();
 
 app.MapGet("/signin-sso", (HttpContext httpContext, string? returnUrl) =>

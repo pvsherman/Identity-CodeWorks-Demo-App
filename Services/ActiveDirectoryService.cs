@@ -32,8 +32,27 @@ public sealed class ActiveDirectoryService : IActiveDirectoryService
                 _options.LdapServer,
                 _options.Port);
             await Task.Run(() => userConnection.Bind());
+        }
+        catch (LdapException ex)
+        {
+            _logger.LogWarning(ex, "Admin LDAP bind failed for {UserName}", username);
+            return AdAuthenticationResult.Failed("The AD username or password is incorrect.");
+        }
 
+        try
+        {
             using var serviceConnection = CreateServiceConnection();
+
+            try
+            {
+                await Task.Run(() => serviceConnection.Bind());
+            }
+            catch (LdapException ex)
+            {
+                _logger.LogError(ex, "Service account LDAP bind failed against {LdapServer}:{Port}", _options.LdapServer, _options.Port);
+                return AdAuthenticationResult.Failed("Wrong system credentials.");
+            }
+
             _logger.LogInformation(
                 "Searching admin group membership. Login input: {LoginName}. Search base: {SearchBaseDn}. Group DN: {GroupDn}. User attribute: {UserNameAttribute}",
                 username,
@@ -66,11 +85,91 @@ public sealed class ActiveDirectoryService : IActiveDirectoryService
         }
     }
 
+    public async Task<AdAuthenticationResult> ValidateUserCredentialsAsync(string username, string password)
+    {
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            return AdAuthenticationResult.Failed("Enter an AD username and password.");
+        }
+
+        try
+        {
+            using var userConnection = CreateConnection(BuildCredential(username, password));
+            _logger.LogInformation(
+                "Attempting LDAP bind for user {UserName} against {LdapServer}:{Port}",
+                username,
+                _options.LdapServer,
+                _options.Port);
+            await Task.Run(() => userConnection.Bind());
+        }
+        catch (LdapException ex)
+        {
+            _logger.LogWarning(ex, "User LDAP bind failed for {UserName}", username);
+            return AdAuthenticationResult.Failed("The AD username or password is incorrect.");
+        }
+
+        try
+        {
+            using var serviceConnection = CreateServiceConnection();
+
+            try
+            {
+                await Task.Run(() => serviceConnection.Bind());
+            }
+            catch (LdapException ex)
+            {
+                _logger.LogError(ex, "Service account LDAP bind failed against {LdapServer}:{Port}", _options.LdapServer, _options.Port);
+                return AdAuthenticationResult.Failed("Wrong system credentials.");
+            }
+
+            _logger.LogInformation(
+                "Searching regular group membership. Login input: {LoginName}. Search base: {SearchBaseDn}. Group DN: {GroupDn}. User attribute: {UserNameAttribute}",
+                username,
+                _options.SearchBaseDn,
+                _options.RegularGroupDn,
+                _options.UserNameAttribute);
+            var user = await FindUserAsync(serviceConnection, username, _options.RegularGroupDn);
+
+            if (user is null)
+            {
+                _logger.LogWarning(
+                    "User LDAP bind succeeded, but no matching directory entry was returned for {LoginName}. Search base: {SearchBaseDn}. Group DN: {GroupDn}",
+                    username,
+                    _options.SearchBaseDn,
+                    _options.RegularGroupDn);
+                return AdAuthenticationResult.Failed("The AD user could not be found in the configured directory search base.");
+            }
+
+            if (!await IsUserMemberOfGroupAsync(serviceConnection, user.DistinguishedName, _options.RegularGroupDn, username))
+            {
+                return AdAuthenticationResult.Failed("The AD user is not a member of the configured User group.");
+            }
+
+            return new AdAuthenticationResult(true, user.DisplayName, user.UserPrincipalName);
+        }
+        catch (LdapException ex)
+        {
+            _logger.LogWarning(ex, "User LDAP login failed for {UserName}", username);
+            return AdAuthenticationResult.Failed("The AD username/password was rejected or LDAP is unavailable.");
+        }
+    }
+
     public async Task<bool> IsSsoUserInRegularGroupAsync(string loginName)
     {
         try
         {
             using var connection = CreateServiceConnection();
+
+            try
+            {
+                await Task.Run(() => connection.Bind());
+            }
+            catch (LdapException ex)
+            {
+                _logger.LogError(ex, "Service account LDAP bind failed against {LdapServer}:{Port}", _options.LdapServer, _options.Port);
+                throw new InvalidOperationException("Wrong system credentials.", ex);
+            }
+
             _logger.LogInformation(
                 "Searching regular group membership. Login input: {LoginName}. Search base: {SearchBaseDn}. Group DN: {GroupDn}. User attribute: {UserNameAttribute}",
                 loginName,

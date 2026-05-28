@@ -86,5 +86,8 @@ Open the displayed localhost URL.
 ```powershell
 dotnet publish -c Release -o .\publish
 ```
+```powershell
+dotnet publish DemoWebApp.csproj -c Release -r win-x64 --self-contained false -o ./publish
+```
 
 In IIS, create a site or application that points to the `publish` folder. The server needs the ASP.NET Core Hosting Bundle installed for the target runtime.

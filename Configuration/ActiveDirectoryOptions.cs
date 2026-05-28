@@ -14,4 +14,5 @@ public sealed class ActiveDirectoryOptions
     public string RegularGroupDn { get; set; } = "";
     public string UserNameAttribute { get; set; } = "sAMAccountName";
     public string SsoUserClaim { get; set; } = "email";
+    public bool UserLoginViaSSO { get; set; } = true;
 }

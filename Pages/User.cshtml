@@ -1,8 +1,66 @@
 @page "/User"
 @model DemoWebApp.Pages.UserModel
 @{
-    ViewData["Title"] = "Sales Pipeline";
+    ViewData["Title"] = Model.HasUserAccess ? "Sales Pipeline" : "User login";
 }
+
+@if (!Model.HasUserAccess)
+{
+    <section class="page-band user">
+        <div class="admin-login">
+            <p class="eyebrow">User access</p>
+            <h1>User Login</h1>
+
+            @if (!string.IsNullOrWhiteSpace(Model.UserError))
+            {
+                <div class="alert">@Model.UserError</div>
+            }
+
+            @if (Model.UserLoginViaSso)
+            {
+                <p class="panel-note">Sign in with your organisation account via SSO.</p>
+                <a class="primary-button" href="@Url.Content("~/launch-sso")">Sign in with SSO</a>
+            }
+            else
+            {
+                <p class="panel-note">Sign in with your AD credentials. Access is granted only after LDAP confirms User group membership.</p>
+                <form class="stack" id="user-login-form" method="post" action="@Url.Content("~/signin-user")">
+                    <div class="directory-label">
+                        <span>Active Directory</span>
+                        <strong>@Model.AdName</strong>
+                    </div>
+                    <label>
+                        <span>Username</span>
+                        <input id="user-username" name="username" autocomplete="username" placeholder="jane.user" autofocus />
+                    </label>
+                    <label>
+                        <span>Password</span>
+                        <input id="user-password" name="password" type="password" autocomplete="current-password" />
+                    </label>
+                    <button class="primary-button" type="submit">Sign in</button>
+                </form>
+
+                <script>
+                    document.getElementById("user-username")?.addEventListener("keydown", event => {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            document.getElementById("user-password")?.focus();
+                        }
+                    });
+
+                    document.getElementById("user-password")?.addEventListener("keydown", event => {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            document.getElementById("user-login-form")?.requestSubmit();
+                        }
+                    });
+                </script>
+            }
+        </div>
+    </section>
+}
+else
+{
 
 <section class="page-band">
     <div class="page-heading">
@@ -52,3 +110,4 @@
         </table>
     </section>
 </section>
+}
