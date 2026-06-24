@@ -2,6 +2,7 @@
 @model DemoWebApp.Pages.IndexModel
 @{
     ViewData["Title"] = "Choose access";
+    var ssoUrl = Url.Content("~/launch-sso");
 }
 
 <section class="login-shell">
@@ -18,7 +19,14 @@
         }
 
         <div class="choice-actions">
-            <a class="primary-button" asp-page="/User">Log in as user</a>
+            @if (Model.UserLoginViaSSO)
+            {
+                <a class="primary-button" href="@ssoUrl">Log in as user</a>
+            }
+            else
+            {
+                <a class="primary-button" asp-page="/User">Log in as user</a>
+            }
             <a class="secondary-button" asp-page="/Admin">Log in as admin</a>
         </div>
     </div>

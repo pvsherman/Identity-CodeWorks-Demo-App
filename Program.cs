@@ -67,6 +67,15 @@ builder.Services
 
         options.Events = new OpenIdConnectEvents
         {
+            OnRedirectToIdentityProvider = context =>
+            {
+                var externalBaseUrl = builder.Configuration["ExternalBaseUrl"];
+                if (!string.IsNullOrWhiteSpace(externalBaseUrl))
+                {
+                    context.ProtocolMessage.RedirectUri = externalBaseUrl.TrimEnd('/') + "/signin-oidc";
+                }
+                return Task.CompletedTask;
+            },
             OnAuthorizationCodeReceived = async context =>
             {
                 if (!builder.Configuration.GetValue<bool>("OneLogin:UseBasicClientAuthentication"))
@@ -284,6 +293,12 @@ app.MapGet("/signin-sso", (HttpContext httpContext, string? returnUrl) =>
 
 app.MapGet("/launch-sso", (HttpContext httpContext) =>
 {
+    var userLoginViaSso = app.Configuration.GetValue<bool>("ActiveDirectory:UserLoginViaSSO");
+    if (!userLoginViaSso)
+    {
+        return Results.LocalRedirect("~/User");
+    }
+
     if (httpContext.User.Identity?.IsAuthenticated == true)
     {
         return Results.LocalRedirect("~/User");
