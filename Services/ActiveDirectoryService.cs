@@ -27,7 +27,7 @@ public sealed class ActiveDirectoryService : IActiveDirectoryService
         {
             using var userConnection = CreateConnection(BuildCredential(username, password));
             _logger.LogInformation(
-                "Attempting LDAP bind for admin user {UserName} against {LdapServer}:{Port}",
+                "Attempting LDAP bind for user {UserName} against {LdapServer}:{Port}",
                 username,
                 _options.LdapServer,
                 _options.Port);
@@ -35,8 +35,8 @@ public sealed class ActiveDirectoryService : IActiveDirectoryService
         }
         catch (LdapException ex)
         {
-            _logger.LogWarning(ex, "Admin LDAP bind failed for {UserName}", username);
-            return AdAuthenticationResult.Failed("The AD username or password is incorrect.");
+            _logger.LogWarning(ex, "LDAP bind failed for {UserName}", username);
+            return AdAuthenticationResult.Failed("Error: The AD username or password is incorrect.");
         }
 
         try
@@ -191,7 +191,7 @@ public sealed class ActiveDirectoryService : IActiveDirectoryService
 
     private LdapConnection CreateServiceConnection()
     {
-        return CreateConnection(new NetworkCredential(_options.BindUsername, _options.BindPassword));
+        return CreateConnection(BuildCredential(_options.BindUsername, _options.BindPassword));
     }
 
     private LdapConnection CreateConnection(NetworkCredential credential)
