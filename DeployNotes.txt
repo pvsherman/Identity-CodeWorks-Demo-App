@@ -1,0 +1,4 @@
+Just in case, after deployment run:
+cipher /d /s:"C:\inetpub\wwwroot\DemoWebApp" to decrypt
+OR
+In File Explorer go to Properties->Advanced-> Uncheck "Encrypt..."
