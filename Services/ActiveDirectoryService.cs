@@ -271,11 +271,10 @@ public sealed class ActiveDirectoryService : IActiveDirectoryService
             .Cast<string>()
             .ToArray();
         _logger.LogInformation(
-            "LDAP entry details for {LoginName}. Entry DN: {EntryDn}. memberOf count: {MemberOfCount}. memberOf values: {MemberOfValues}",
+            "LDAP entry details for {LoginName}. Entry DN: {EntryDn}. memberOf count: {MemberOfCount}. ",
             loginName,
             entry.DistinguishedName,
-            memberOfValues?.Length ?? 0,
-            memberOfValues is { Length: > 0 } ? string.Join(" | ", memberOfValues) : "<none>");
+            memberOfValues?.Length ?? 0);
 
         return new AdUser(
             entry.DistinguishedName,

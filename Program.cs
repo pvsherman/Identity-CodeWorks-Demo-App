@@ -248,7 +248,8 @@ app.MapPost("/signin-admin", async (
     };
 
     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-    await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+    var principal = new ClaimsPrincipal(identity);
+    await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
     return Results.LocalRedirect("~/Admin");
 }).DisableAntiforgery();
@@ -274,7 +275,8 @@ app.MapPost("/signin-user", async (
     };
 
     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-    await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+    var principal = new ClaimsPrincipal(identity);
+    await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
     return Results.LocalRedirect("~/User");
 }).DisableAntiforgery();
