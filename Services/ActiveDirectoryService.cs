@@ -23,6 +23,8 @@ public sealed class ActiveDirectoryService : IActiveDirectoryService
             return AdAuthenticationResult.Failed("Enter an AD username and password.");
         }
 
+        username = username.Trim();
+
         try
         {
             using var userConnection = CreateConnection(BuildCredential(username, password));
@@ -91,6 +93,8 @@ public sealed class ActiveDirectoryService : IActiveDirectoryService
         {
             return AdAuthenticationResult.Failed("Enter an AD username and password.");
         }
+
+        username = username.Trim();
 
         try
         {

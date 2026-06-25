@@ -1,4 +1,8 @@
-Just in case, after deployment run:
-cipher /d /s:"C:\inetpub\wwwroot\DemoWebApp" to decrypt
-OR
-In File Explorer go to Properties->Advanced-> Uncheck "Encrypt..."
+To publish:
+1. dotnet publish "c:\Projects\DemoWebApp\DemoWebApp.csproj" -c Release --no-self-contained -o "c:\Projects\DemoWebApp\publish"
+2. Copy that foder to C:\inetpub\wwwroot\DemoWebApp
+3. Just in case, after deployment run: cipher /d /s:"C:\inetpub\wwwroot\DemoWebApp" to decrypt
+   OR
+   In File Explorer go to Properties->Advanced-> Uncheck "Encrypt..."
+
+   var connection = new LdapConnection(identifier, credential, AuthType.Negotiate!!!!)
