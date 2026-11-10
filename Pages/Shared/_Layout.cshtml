@@ -1,4 +1,4 @@
-@using DemoWebApp.Configuration
+@using IdentityCodeworks_DemoApp.Configuration
 @using Microsoft.Extensions.Options
 @inject IOptions<AppBrandingOptions> Branding
 <!DOCTYPE html>
@@ -16,11 +16,15 @@
             <span>Sales Access Demo</span>
         </a>
         <nav class="nav">
-            <a asp-page="/User">User</a>
-            <a asp-page="/Admin">Admin</a>
             @if (User.Identity?.IsAuthenticated == true)
             {
-                <form method="post" action="@Url.Content("~/signout")">
+                <a asp-page="/User">User</a>
+                <a asp-page="/AuthInfo">Authentication Info</a>
+                @if (User.IsInRole(IdentityCodeworks_DemoApp.Auth.DemoRoles.Admin))
+                {
+                    <a asp-page="/Admin">Admin</a>
+                }
+                <form method="post" asp-page="/SignOut">
                     <button class="link-button" type="submit">Sign out</button>
                 </form>
             }

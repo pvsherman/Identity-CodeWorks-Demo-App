@@ -1,33 +1,41 @@
 @page
-@model DemoWebApp.Pages.IndexModel
+@model IdentityCodeworks_DemoApp.Pages.IndexModel
 @{
-    ViewData["Title"] = "Choose access";
-    var ssoUrl = Url.Content("~/launch-sso");
+    ViewData["Title"] = "Choose sign-in";
+    var entraUrl = $"{Url.Content("~/auth/login/entra")}?returnUrl={Uri.EscapeDataString(Model.ReturnUrl ?? string.Empty)}";
+    var oktaOidcUrl = $"{Url.Content("~/auth/login/okta-oidc")}?returnUrl={Uri.EscapeDataString(Model.ReturnUrl ?? string.Empty)}";
+    var oktaSamlUrl = $"{Url.Content("~/auth/login/okta-saml")}?returnUrl={Uri.EscapeDataString(Model.ReturnUrl ?? string.Empty)}";
+    var activeDirectoryUrl = $"{Url.Content("~/auth/login/active-directory")}?returnUrl={Uri.EscapeDataString(Model.ReturnUrl ?? string.Empty)}";
 }
 
 <section class="login-shell">
     <div class="choice-panel">
-        <div>
-            <p class="eyebrow">Identity Manager access demo</p>
-            <h1>Sales Command Center</h1>
-            <p class="lede">Choose the access path you want to demonstrate. User access starts with OneLogin SSO, while administrator access uses AD credentials.</p>
-        </div>
+        <h1>Sales Command Center</h1>
+        <p class="lede">Choose a sign-in method</p>
 
-        @if (!string.IsNullOrWhiteSpace(Model.SsoError))
+        @if (!string.IsNullOrWhiteSpace(Model.AuthenticationError))
         {
-            <div class="alert">@Model.SsoError</div>
+            <div class="alert">@Model.AuthenticationError</div>
         }
 
         <div class="choice-actions">
-            @if (Model.UserLoginViaSSO)
-            {
-                <a class="primary-button" href="@ssoUrl">Log in as user</a>
-            }
-            else
-            {
-                <a class="primary-button" asp-page="/User">Log in as user</a>
-            }
-            <a class="secondary-button" asp-page="/Admin">Log in as admin</a>
+            <a class="sign-in-option" href="@entraUrl">
+                <span class="sign-in-method">Microsoft Entra ID</span>
+                <span class="sign-in-protocol">OIDC</span>
+            </a>
+            <a class="sign-in-option" href="@oktaOidcUrl">
+                <span class="sign-in-method">Okta OIDC</span>
+                <span class="sign-in-protocol">OIDC</span>
+            </a>
+            <a class="sign-in-option" href="@oktaSamlUrl">
+                <span class="sign-in-method">Okta SAML</span>
+                <span class="sign-in-protocol">SAML 2.0</span>
+            </a>
+            <a class="sign-in-option" href="@activeDirectoryUrl">
+                <span class="sign-in-method">Active Directory</span>
+                <span class="sign-in-protocol">Windows / Kerberos</span>
+            </a>
         </div>
+        <p class="sign-in-footer">Illustrative layout</p>
     </div>
 </section>

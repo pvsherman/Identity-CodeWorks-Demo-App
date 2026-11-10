@@ -69,11 +69,8 @@ a {
     min-height: calc(100vh - 68px);
     display: grid;
     place-items: center;
-    padding: 40px 24px;
-    background:
-        linear-gradient(120deg, rgba(18, 52, 59, .92), rgba(18, 52, 59, .64)),
-        url("/images/logo.svg") center 22% / 280px no-repeat,
-        #12343b;
+    padding: 32px 24px;
+    background: #f7faf8;
 }
 
 .login-panel {
@@ -86,15 +83,75 @@ a {
 }
 
 .choice-panel {
-    width: min(780px, 100%);
-    color: white;
+    width: min(576px, 100%);
+    padding: 28px 26px 20px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid #e1e7e4;
+    border-radius: 20px;
+    box-shadow: 0 14px 36px rgba(28, 45, 45, .08);
 }
 
 .choice-actions {
+    display: grid;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.choice-panel h1 {
+    margin-bottom: 8px;
+    font-size: 30px;
+    line-height: 1.2;
+}
+
+.choice-panel .lede {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.sign-in-option {
+    min-height: 60px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin-top: 28px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 18px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid #dfe5e2;
+    border-radius: 11px;
+    text-decoration: none;
+    transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+.sign-in-option:hover {
+    background: #f8fbfa;
+    border-color: #9aadaa;
+    box-shadow: 0 2px 8px rgba(28, 45, 45, .08);
+}
+
+.sign-in-option:focus-visible {
+    outline: 3px solid rgba(46, 196, 182, .55);
+    outline-offset: 2px;
+}
+
+.sign-in-method {
+    font-weight: 700;
+}
+
+.sign-in-protocol {
+    color: var(--muted);
+    font-size: 14px;
+    text-align: right;
+}
+
+.sign-in-footer {
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
 }
 
 h1, h2, p {

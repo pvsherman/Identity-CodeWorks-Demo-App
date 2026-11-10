@@ -1,4 +1,4 @@
-namespace DemoWebApp.Configuration;
+namespace IdentityCodeworks_DemoApp.Configuration;
 
 public sealed class AppBrandingOptions
 {

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DemoWebApp.Pages;
+namespace IdentityCodeworks_DemoApp.Pages;
 
 public sealed class ErrorModel : PageModel;

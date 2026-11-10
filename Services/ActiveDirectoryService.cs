@@ -1,9 +1,9 @@
 using System.DirectoryServices.Protocols;
 using System.Net;
-using DemoWebApp.Configuration;
+using IdentityCodeworks_DemoApp.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace DemoWebApp.Services;
+namespace IdentityCodeworks_DemoApp.Services;
 
 public sealed class ActiveDirectoryService : IActiveDirectoryService
 {

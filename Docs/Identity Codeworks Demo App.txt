@@ -1,0 +1,8 @@
+Identity Codeworks Demo App
+
+Entra ID local redirect URI:
+https://localhost:7060/IdentityCodeworks_DemoApp/signin-entra
+
+Configure tenant, client, group Object ID, and secret through appsettings placeholders and .NET User Secrets as described in README.md. Secret values are intentionally not stored in this file.
+
+The secret value previously written here should be revoked and replaced in Entra ID.

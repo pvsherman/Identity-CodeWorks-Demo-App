@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace DemoWebApp.Auth;
+namespace IdentityCodeworks_DemoApp.Auth;
 
 public static class ClaimsReader
 {

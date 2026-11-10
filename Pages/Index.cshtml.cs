@@ -1,23 +1,15 @@
-using DemoWebApp.Configuration;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Options;
 
-namespace DemoWebApp.Pages;
+namespace IdentityCodeworks_DemoApp.Pages;
 
 public sealed class IndexModel : PageModel
 {
-    private readonly ActiveDirectoryOptions _adOptions;
+    public string? AuthenticationError { get; private set; }
+    public string? ReturnUrl { get; private set; }
 
-    public IndexModel(IOptions<ActiveDirectoryOptions> adOptions)
+    public void OnGet(string? authError, string? returnUrl)
     {
-        _adOptions = adOptions.Value;
-    }
-
-    public string? SsoError { get; private set; }
-    public bool UserLoginViaSSO => _adOptions.UserLoginViaSSO;
-
-    public void OnGet(string? ssoError)
-    {
-        SsoError = ssoError;
+        AuthenticationError = authError;
+        ReturnUrl = returnUrl;
     }
 }

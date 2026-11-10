@@ -1,8 +1,8 @@
 To publish:
-1. dotnet publish "c:\Projects\DemoWebApp\DemoWebApp.csproj" -c Release --no-self-contained -o "c:\Projects\DemoWebApp\publish"
-2. Copy that foder to C:\inetpub\wwwroot\DemoWebApp
-3. Just in case, after deployment run: cipher /d /s:"C:\inetpub\wwwroot\DemoWebApp" to decrypt
+1. dotnet publish "c:\Projects\IdentityCodeworks_DemoApp\IdentityCodeworks_DemoApp.csproj" -c Release --no-self-contained -o "c:\Projects\IdentityCodeworks_DemoApp\publish"
+2. Copy that folder to C:\inetpub\wwwroot\IdentityCodeworks_DemoApp
+3. If the deployment folder is EFS-encrypted, decrypt it with: cipher /d /s:"C:\inetpub\wwwroot\IdentityCodeworks_DemoApp"
    OR
    In File Explorer go to Properties->Advanced-> Uncheck "Encrypt..."
 
-   var connection = new LdapConnection(identifier, credential, AuthType.Negotiate!!!!)
+Mount the IIS application at /IdentityCodeworks_DemoApp and configure the production IdP redirect URIs with this path prefix.

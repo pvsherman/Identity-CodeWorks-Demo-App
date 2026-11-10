@@ -1,0 +1,69 @@
+@page
+@model IdentityCodeworks_DemoApp.Pages.AuthInfoModel
+@{
+    ViewData["Title"] = "Authentication information";
+}
+
+<section class="page-band">
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">Session diagnostics</p>
+            <h1>Authentication Information</h1>
+        </div>
+        <div class="status-pill">Authenticated</div>
+    </div>
+
+    <section class="control-panel">
+        <h2>Identity</h2>
+        <dl class="auth-info-list">
+            <dt>Display name</dt>
+            <dd>@Model.DisplayName</dd>
+            <dt>Username or email</dt>
+            <dd>@Model.Username</dd>
+            <dt>Identity provider</dt>
+            <dd>@Model.IdentityProvider</dd>
+            <dt>Protocol</dt>
+            <dd>@Model.Protocol</dd>
+            <dt>Issuer</dt>
+            <dd>@Model.Issuer</dd>
+            <dt>Authentication status</dt>
+            <dd>@Model.AuthenticationStatus</dd>
+            <dt>Admin access</dt>
+            <dd>@(Model.HasAdminAccess ? "Yes" : "No")</dd>
+        </dl>
+    </section>
+
+    <section class="control-panel">
+        <h2>Group claims</h2>
+        @if (Model.GroupClaims.Count == 0)
+        {
+            <p class="panel-note">No group claims were included in this session.</p>
+        }
+        else
+        {
+            <ul class="audit-list">
+                @foreach (var claim in Model.GroupClaims)
+                {
+                    <li><span>@claim.Type</span> @claim.Value</li>
+                }
+            </ul>
+        }
+    </section>
+
+    <section class="control-panel">
+        <h2>Normalized application roles</h2>
+        @if (Model.Roles.Count == 0)
+        {
+            <p class="panel-note">No application roles.</p>
+        }
+        else
+        {
+            <ul class="audit-list">
+                @foreach (var role in Model.Roles)
+                {
+                    <li>@role</li>
+                }
+            </ul>
+        }
+    </section>
+</section>

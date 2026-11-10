@@ -1,11 +1,11 @@
 @page
-@model DemoWebApp.Pages.AccessDeniedModel
+@model IdentityCodeworks_DemoApp.Pages.AccessDeniedModel
 @{
     ViewData["Title"] = "Access denied";
 }
 
 <section class="message-page">
     <h1>Access denied</h1>
-    <p>Your identity was authenticated, but the required AD group membership or sign-in method was not present.</p>
+    <p>Your identity was authenticated, but it does not have the configured Admin group claim required for this page.</p>
     <a class="primary-button" asp-page="/Index">Return to sign in</a>
 </section>

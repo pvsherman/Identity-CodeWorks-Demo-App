@@ -1,4 +1,4 @@
-namespace DemoWebApp.Services;
+namespace IdentityCodeworks_DemoApp.Services;
 
 public interface IActiveDirectoryService
 {
