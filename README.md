@@ -41,7 +41,7 @@ Credentials previously present in the application's configuration and local note
 ### Microsoft Entra ID (OIDC)
 
 1. Register a single-tenant web application and create a client secret. Store the secret value in User Secrets; it is only shown by Entra when created.
-2. Add this Web redirect URI: `https://localhost:7060/IdentityCodeworks_DemoApp/signin-entra`.
+2. Add `https://localhost:7060/IdentityCodeworks_DemoApp/signin-entra` and `https://localhost:7060/IdentityCodeworks_DemoApp/signout-entra` as Web redirect URIs.
 3. Configure the app's client ID and tenant ID. The app uses OIDC Authorization Code Flow with PKCE and validates the token using the tenant's metadata.
 4. Configure an optional groups claim in the ID token containing Entra group Object IDs. Set `Authentication:Entra:GroupClaimType` if its name differs from `groups`.
 5. Set `Authorization:AdminGroups:Entra` to the Admin group's Object ID (GUID). Add users to that group for Admin access; other authenticated users receive regular access.
@@ -52,7 +52,7 @@ When Entra indicates group-claim overage, the app deliberately does not grant Ad
 ### Okta OIDC
 
 1. Create a separate OIDC Web Application integration in the same Okta org.
-2. Add `https://localhost:7060/IdentityCodeworks_DemoApp/signin-okta` as a sign-in redirect URI and the app root as a sign-out redirect URI.
+2. Add `https://localhost:7060/IdentityCodeworks_DemoApp/signin-okta` as a sign-in redirect URI and `https://localhost:7060/IdentityCodeworks_DemoApp/signout-okta` as a sign-out redirect URI. The app uses this callback to complete federated logout, then returns the browser to the app root.
 3. Set `Authentication:OktaOidc:Issuer` to the issuer for this authorization server, plus its Client ID and secret. Store the secret in User Secrets.
 4. Add a `groups` claim to the ID token containing group names; set `Authentication:OktaOidc:GroupClaimType` if the claim uses another name.
 5. Set `Authorization:AdminGroups:OktaOidc` to the exact Admin group name. Create one test user in that group and another outside it, then verify both regular-page access and Admin denial/allow behavior.

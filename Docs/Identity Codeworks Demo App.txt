@@ -1,8 +1,40 @@
-Identity Codeworks Demo App
+IdentityCodeworks Demo App:
 
-Entra ID local redirect URI:
-https://localhost:7060/IdentityCodeworks_DemoApp/signin-entra
+=========================================================================================================
+EntraID Registration:
+Object ID: 955dd544-cf37-4d45-a25a-ce20b8392196
 
-Configure tenant, client, group Object ID, and secret through appsettings placeholders and .NET User Secrets as described in README.md. Secret values are intentionally not stored in this file.
+Redirect URL: https://localhost:7060/IdentityCodeworks_DemoApp/signin-entra
 
-The secret value previously written here should be revoked and replaced in Entra ID.
+App-Admins group ObjectID - 1bf93ed3-b563-4447-a906-ee51a041bfaa
+
+Client Secret for Identity Codeworks Local Development
+Secret ID: 9489f832-2adc-4d27-91b8-4e3790901b3f
+Value: -TJ8Q~X1-sICPr3yc-uZZtax9WDFHwO0z5e7XcEy
+
+Setting up secret locally:
+PS> dotnet user-secrets init
+PS> dotnet user-secrets set "Authentication:Entra:ClientSecret" "-TJ8Q~X1-sICPr3yc-uZZtax9WDFHwO0z5e7XcEy"
+
+"Authentication": {
+    "Entra": {
+      "TenantId": "aae4bfa1-056d-4854-8696-9bea98fd9326",
+      "ClientId": "cefd668e-be77-45f4-af52-dbde9b09abd1",
+      "ClientSecret": "",
+      "Authority": "https://login.microsoftonline.com/aae4bfa1-056d-4854-8696-9bea98fd9326/v2.0",
+      "RedirectUri": "https://localhost:7060/IdentityCodeworks_DemoApp/signin-entra",
+      "GroupClaimType": "groups"
+    },
+
+==============================================================================================================
+Okta:
+"ClientId": "0oa19sptm8onUSWgT698"
+Client Secret: dotnet user-secrets set "Authentication:OktaOidc:ClientSecret" "r9lPxZxHGuqz8inn4LwLVRTrsFQ8Iw_VAH8Ho3CZZgc_T75uLWyfLN6gsoCRDmOK"
+
+"OktaOidc": {
+      "Issuer": "https://integrator-2943199.okta.com",
+      "ClientId": "0oa19sptm8onUSWgT698",
+      "ClientSecret": "",
+      "RedirectUri": "https://localhost:7060/IdentityCodeworks_DemoApp/signin-okta",
+      "GroupClaimType": "groups"
+    },
