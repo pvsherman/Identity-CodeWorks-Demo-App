@@ -1,5 +1,11 @@
 IdentityCodeworks Demo App:
 
+Users:
+Ben.Erdman@IdentityCodeworks.com
+Rick.Beier@IdentityCodeworks.com
+Scarlet.Littel@identitycodeworks.com
+
+.No..Nac..OdDva
 =========================================================================================================
 EntraID Registration:
 Object ID: 955dd544-cf37-4d45-a25a-ce20b8392196
@@ -27,7 +33,7 @@ PS> dotnet user-secrets set "Authentication:Entra:ClientSecret" "-TJ8Q~X1-sICPr3
     },
 
 ==============================================================================================================
-Okta:
+Okta - OIDC: 
 "ClientId": "0oa19sptm8onUSWgT698"
 Client Secret: dotnet user-secrets set "Authentication:OktaOidc:ClientSecret" "r9lPxZxHGuqz8inn4LwLVRTrsFQ8Iw_VAH8Ho3CZZgc_T75uLWyfLN6gsoCRDmOK"
 
@@ -38,3 +44,9 @@ Client Secret: dotnet user-secrets set "Authentication:OktaOidc:ClientSecret" "r
       "RedirectUri": "https://localhost:7060/IdentityCodeworks_DemoApp/signin-okta",
       "GroupClaimType": "groups"
     },
+
+====================================================================================================================
+
+Okta - SAML:
+Issuer : 	http://www.okta.com/exk19ubdis1myc1Vp698
+Sign on URL : 	https://integrator-2943199.okta.com/app/integrator-2943199_identitycodeworksdemosaml_1/exk19ubdis1myc1Vp698/sso/saml
